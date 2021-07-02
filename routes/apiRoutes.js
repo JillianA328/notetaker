@@ -8,6 +8,11 @@ router.get('/notes', (req, res) => {
     res.json(notesData);
 });
 
+router.post('/notes', (req, res) => {
+    const notesData = JSON.parse( fs.readFileSync (path.join(__dirname, "../db/db.json"), "utf-8"));
+    res.json(notesData);
+});
+
 
 // router.post
 
