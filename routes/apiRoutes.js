@@ -8,4 +8,7 @@ router.get('/notes', (req, res) => {
     res.json(notesData);
 });
 
+
+// router.post
+
 module.exports = router
