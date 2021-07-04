@@ -16,4 +16,4 @@ router.post('/notes', (req, res) => {
 
 // router.post
 
-module.exports = router
+module.exports = router;
