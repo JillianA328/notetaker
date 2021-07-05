@@ -1,18 +1,20 @@
-const router  = require("express").Router();
-const notes = require("../lib/notes");
+const router  = require('express').Router();
+const notes = require('../db/db.json');
 const fs = require("fs");
-const path = require("path");
-const {createNewNote} = require('../lib/notes')
+const {createNewNote} = require('../lib/notes.js')
 
 
-router.get('/notes', (req, res) => {
-    const notesData = JSON.parse( fs.readFileSync (path.join(__dirname, "../db/db.json"), "utf-8"));
+router.get("/api/notes", (req, res) => {
+    const notesData = JSON.parse( fs.readFileSync ('./db/db.json'), "utf-8");
     res.json(notesData);
+    console.log(notesData);
 });
 
-router.post('/api/notes', (req, res) => {
-    const notesData = JSON.parse( fs.readFileSync (path.join(__dirname, "../db/db.json"), "utf-8"));
-    res.json(notesData);
+router.post("/api/notes", (req, res) => {
+    const note = createNewNote(req.body, notes);
+    note.id=noteId;
+    res.json(note);
+    console.log(note);
 });
 
 
