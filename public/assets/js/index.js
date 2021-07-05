@@ -12,21 +12,17 @@ if (window.location.pathname === '/notes') {
   noteList = document.querySelectorAll('.list-container .list-group');
 }
 
-// Show an element
 const show = (elem) => {
   elem.style.display = 'inline';
 };
 
-// Hide an element
 const hide = (elem) => {
   elem.style.display = 'none';
 };
 
-
 let activeNote = {};
 
-
-//get notes from APU
+//Get all notes from API
 const getNotes = () =>
   fetch('/api/notes', {
     method: 'GET',
@@ -36,8 +32,8 @@ const getNotes = () =>
   });
 
 
-  //Save fuction
-const saveNote = (note) =>
+//Save note
+const saveNote = note =>
   fetch('/api/notes', {
     method: 'POST',
     headers: {
@@ -47,20 +43,20 @@ const saveNote = (note) =>
   });
 
 
-  //Delete function
-  const deleteNote = (id) =>
-  fetch('/api/notes/'+id, {
+//Delete function - NOT YET WORKING
+const deleteNote = id =>
+  fetch('/api/notes/:'+id, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
     },
   });
 
-
-  // Display note on HTML page
+//If the note loaded is pre-created, don't make it editable.  If it hasnt yet been created, make the controls editable.
 const renderActiveNote = () => {
   hide(saveNoteBtn);
 
+  //if the note has an id, its already been created.  Don't let it be edited again
   if (activeNote.id) {
     noteTitle.setAttribute('readonly', true);
     noteText.setAttribute('readonly', true);
@@ -74,6 +70,7 @@ const renderActiveNote = () => {
   }
 };
 
+//Code to execute note save and re-rendering
 const handleNoteSave = () => {
   const newNote = {
     title: noteTitle.value,
@@ -85,7 +82,7 @@ const handleNoteSave = () => {
   });
 };
 
-
+//Code to execute note deletion and re-rendering
 const handleNoteDelete1 = (e) => {
   console.log('delete event');
   e.stopPropagation();
@@ -97,7 +94,7 @@ const handleNoteDelete1 = (e) => {
     activeNote = {};
   }
   console.log('lets delete note: ' + noteId);
-
+  //TODO: Fix this delete
   deleteNote(noteId).then(() => {
     getAndRenderNotes();
     renderActiveNote();
@@ -105,7 +102,7 @@ const handleNoteDelete1 = (e) => {
 };
 
 
-//display note
+//Code to set the active note on the right hand side pane
 const handleNoteView = (e) => {
   e.preventDefault();
   activeNote = JSON.parse(e.target.parentElement.getAttribute('data-note'));
@@ -119,6 +116,7 @@ const handleNewNoteView = (e) => {
   renderActiveNote();
 };
 
+//code to determine whether or not to show the save button
 const handleRenderSaveBtn = () => {
   if (!noteTitle.value.trim() || !noteText.value.trim()) {
     hide(saveNoteBtn);
@@ -127,7 +125,7 @@ const handleRenderSaveBtn = () => {
   }
 };
 
-// displays saed notes 
+//Code to create the left hand side list of notes
 const renderNoteList = async (notes) => {
   let jsonNotes = await notes.json();
   if (window.location.pathname === '/notes') {
@@ -136,7 +134,6 @@ const renderNoteList = async (notes) => {
 
   let noteListItems = [];
 
-a
   const createLi = (text, delBtn = true) => {
     const liEl = document.createElement('li');
     liEl.classList.add('list-group-item');
@@ -181,7 +178,9 @@ a
   }
 };
 
+
 const getAndRenderNotes = () => getNotes().then(renderNoteList);
+
 
 if (window.location.pathname === '/notes') {
   saveNoteBtn.addEventListener('click', handleNoteSave);
