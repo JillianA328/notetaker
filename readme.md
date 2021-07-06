@@ -13,4 +13,4 @@ https://github.com/JillianA328/notetaker-amelung
 
 
 GitHub code Link:
-https://jilliana328.github.io/notetaker-amelung/
+https://github.com/JillianA328/notetaker-amelung
